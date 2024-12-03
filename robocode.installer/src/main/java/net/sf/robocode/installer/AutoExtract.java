@@ -539,7 +539,7 @@ public class AutoExtract implements ActionListener {
                                 "Warning: Cannot determine canonical file for " + file + ". It has been ignored");
                     }
                 } else {
-                    if (file.exists() && file.getCanonicalPath().startsWith(dir.getCanonicalPath()) && !file.delete()) {
+                    if (file.exists() && !file.delete()) {
                         System.err.println("Can't delete: " + file);
                     }
                 }
