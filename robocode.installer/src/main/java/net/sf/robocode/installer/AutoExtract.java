@@ -320,7 +320,7 @@ public class AutoExtract implements ActionListener {
 
     private static boolean isSilent = false;
 
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws IOException {
         String suggestedDirName;
         if (argv.length >= 1) {
             suggestedDirName = argv[0];
@@ -515,7 +515,7 @@ public class AutoExtract implements ActionListener {
 
     }
 
-    private static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) throws IOException {
         if (dir.isDirectory()) {
             for (File file : (dir != null && dir.isDirectory() ? dir.listFiles() : new File[0])) {
                 if (file.isDirectory()) {
@@ -539,7 +539,7 @@ public class AutoExtract implements ActionListener {
                                 "Warning: Cannot determine canonical file for " + file + ". It has been ignored");
                     }
                 } else {
-                    if (file.exists() && !file.delete()) {
+                    if (file.exists() && file.getCanonicalPath().startsWith(dir.getCanonicalPath()) && !file.delete()) {
                         System.err.println("Can't delete: " + file);
                     }
                 }
@@ -765,7 +765,7 @@ public class AutoExtract implements ActionListener {
      * @param file the file or directory to delete
      * @return true if success
      */
-    private static boolean deleteFileAndParentDirsIfEmpty(File file) {
+    private static boolean deleteFileAndParentDirsIfEmpty(File file) throws IOException {
         boolean wasDeleted = false;
 
         if (file != null && file.exists()) {
